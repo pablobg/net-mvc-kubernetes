@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-deploy
+  labels:
+    name: app-deploy
+    app: app
+spec:
+  replicas: 3
+  selector:
+  # hacer match con el pod que quiero hacer el deploy
+    matchLabels:
+      app: app
+      type: mvc
+  template:
+    metadata:
+      name: app-pod
+      # identificadores del pod
+      labels:
+        app: app
+        type: mvc
+    spec:
+      containers:
+        - name: app-mvc
+          image: pablobari/mvc-prototipo:v1.0
+          ports:
+            - containerPort: 80
+          env:
+            - name: ConnectionStrings__ContextoCurso
+              value: Server=mssql-service;Database=CursosOnline;User=sa;Password=vaxidrez.2025    
